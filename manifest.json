@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "chrome-swipe-navigation",
+  "version": "2.0.0",
+  "description": "Navigate back and forward in Chrome with a 2-finger swipe gesture",
+  "icons": {
+    "16": "assets/icons/16.png",
+    "32": "assets/icons/32.png",
+    "48": "assets/icons/48.png",
+    "128": "assets/icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "run_at": "document_end",
+      "js": ["swipe-back.js"],
+      "css": ["swipe-back.css"]
+    }
+  ]
+}

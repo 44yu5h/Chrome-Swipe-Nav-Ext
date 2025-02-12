@@ -1,12 +1,301 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-   <title>Water Popup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Settings</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: "Poppins", sans-serif;
+            text-align: left;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 95vh;
+            background: #fff;
+            color: #000;
+        }
+
+        /* Material Card */
+        .container {
+            background: white;
+            padding: 30px;
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 24px;
+        }
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: black;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle:before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
+        }
+        input[type="checkbox"]:checked + .toggle {
+            background: #c1dde0;
+        }
+        input[type="checkbox"]:checked + .toggle:before {
+            transform: translateX(20px);
+            background: black;
+        }
+
+        /* Range Slider */
+        .slider-container {
+            margin-top: 8px;
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .slider {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 18px;
+            background: #eee;
+            border-radius: 9px;
+            outline: none;
+            overflow: hidden;
+            position: relative;
+        }
+        .slider::-webkit-slider-runnable-track {
+            height: 18px;
+            background: #eee;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: black;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            background: #c1dde0;
+            border-radius: 9px;
+            left: 0;
+            width: var(--progress-width, 50%);
+            z-index: 1;
+        }
+
+        /* Value Pill */
+        .value-pill {
+            margin-left: 10px;
+            background: #c1dde0;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Number Input */
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .input-container span {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .number-input {
+            display: flex;
+            align-items: center;
+            background: #c1dde0;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 120px;
+        }
+
+        .number-input input {
+            flex: 2;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+            color: black;
+            outline: none;
+            width: 60%;
+        }
+        /* Hide up/down arrows in num input */
+        .number-input input::-webkit-outer-spin-button,
+        .number-input input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .unit-box {
+            flex: 1;
+            background: #aac6c9;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: black;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(1, 1fr);
+            gap: 10px;
+            padding: 20px 20px;
+            border-radius: 16px;
+            background: #c1dde0;
+            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+        }
+
+        /* Icon Item */
+        .icon-item {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 1);
+            transition: background 0.3s ease, transform 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon-item img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .icon-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+        }
+        .icon-item.selected {
+            background: #e0f7fa;
+            box-shadow: 0px 0px 10px rgba(0, 169, 165, 0.8);
+        }
+
+        /* Show More/Less Button */
+        .show-more {
+            margin-top: 15px;
+            padding: 10px 24px;
+            width: 90%; 
+            background: black;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        .show-more:hover {
+            background: #c1dde0;
+            color: #000000;
+        }
+
+        /* Custom Material Design Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f7f8;
+            border-radius: 25px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #aac6c9;
+            border-radius: 25px;
+            border: 2px solid #f4f7f8;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aac6c9;
+        }
+
+        .slider-label {
+            text-align: left;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <button id="iconButton">
-        <img id="open-settings" src="./icons/16.png" alt="Icon">
-    </button>
-    
-    <script src="popup.js"></script>
+    <div class="container">
+        <!-- Toggle -->
+        <div class="toggle-container">
+            <span>Enable Extension</span>
+            <label>
+                <input type="checkbox" id="enableFeature" hidden>
+                <div class="toggle"></div>
+            </label>
+        </div>
+
+        <!-- Input boxes -->
+        <div class="input-container">
+            <span>Arrow Size</span>
+            <div class="number-input">
+                <input type="number" id="arrowSize" value="60">
+                <span class="unit-box">px</span>
+            </div>
+        </div>
+        <div class="input-container">
+            <span>Icon Travel Distance</span>
+            <div class="number-input">
+                <input type="number" id="travelDistance" value="120">
+                <span class="unit-box">px</span>
+            </div>
+        </div>
+
+        <!-- Sliders -->
+        <span class="slider-label">Fade Delay (ms)</span>
+        <div class="slider-container">
+            <input type="range" id="fadeDelay" class="slider" min="0" max="2000" step="100">
+            <span id="fadeDelayValue" class="value-pill">700</span>
+        </div>
+        <span class="slider-label">Sensitivity (%)</span>
+        <div class="slider-container">
+            <input type="range" id="sensitivity" class="slider" min="0" max="100" step="1">
+            <span id="sensitivityValue" class="value-pill">50</span>
+        </div>
+
+        <!-- Icon Selection -->
+        <span>Select an Icon</span><br>
+        <div class="icon-grid" id="iconGrid"></div>
+        <div class="show-more" id="showMore">Show More</div>
+        <script src="popup.js"></script>
+    </div>
 </body>
 </html>

@@ -17,9 +17,8 @@ document.body.appendChild(rightArrow);
 
 let position = 0;
 let freezeUntil = 0;
-let resetTimeoutID = 0;
 let transitionTimeoutID = 0;
-let scrollTimeoutID = 0;
+let resetTimeoutID = 0;
 
 const imageInitialLeft = -110;
 
@@ -27,10 +26,10 @@ let arrowSize, iconTravelDist, fadeDelay, sensitivity ; // user-settings
 
 chrome.storage.sync.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
   fadeDelay = data.fadeDelay ?? 700;
-  sensitivity = data.sensitivity ?? 5;
+  sensitivity = data.sensitivity ?? 16;
   iconTravelDist = data.travelDistance ?? 120;
   arrowSize = data.arrowSize ?? 60;
-  sensitivity = sensitivity / 100;
+  sensitivity = sensitivity / 200;
 
   // Inject CSS after settings are loaded
   const style = document.createElement('style');
@@ -138,10 +137,10 @@ function handleWheel(event) {
     }
     position = 0;
   }
-  if (scrollTimeoutID) {
-    clearTimeout(scrollTimeoutID);
+  if (resetTimeoutID) {
+    clearTimeout(resetTimeoutID);
   }
-  scrollTimeoutID = setTimeout(() => {
+  resetTimeoutID = setTimeout(() => {
     resetPosition();
   }, fadeDelay);
 }

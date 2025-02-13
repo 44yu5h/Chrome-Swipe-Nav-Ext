@@ -1,4 +1,3 @@
-
 const container = document.createElement("div");
 container.className = "browser-extension-swipe-back-container";
 
@@ -16,21 +15,55 @@ chrome.storage.sync.get(["selectedIcon"], function (data) {
 document.body.appendChild(leftArrow);
 document.body.appendChild(rightArrow);
 
-let sensitivity = 0.04;  // TODO user-settings: make it ajdustable relative to iconTravelDistance: map
 let position = 0;
 let freezeUntil = 0;
-let fadeDelay = 750;
-document.documentElement.style.setProperty('--fade-delay', `${fadeDelay}ms`);
 let resetTimeoutID = 0;
 let transitionTimeoutID = 0;
 let scrollTimeoutID = 0;
 
-let arrowSize = 60;
-document.documentElement.style.setProperty('--size', `${arrowSize}px`);
-
-let iconTravelDist = 120;
-
 const imageInitialLeft = -110;
+
+let arrowSize, iconTravelDist, fadeDelay, sensitivity ; // user-settings
+
+chrome.storage.sync.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
+  fadeDelay = data.fadeDelay ?? 700;
+  sensitivity = data.sensitivity ?? 5;
+  iconTravelDist = data.travelDistance ?? 120;
+  arrowSize = data.arrowSize ?? 60;
+  sensitivity = sensitivity / 100;
+
+  // Inject CSS after settings are loaded
+  const style = document.createElement('style');
+  style.textContent = `
+    .browser-extension-swipe-back-arrow {
+      position: fixed;
+      top: calc(50vh - ${arrowSize}px / 2);
+      width: ${arrowSize}px;
+      height: ${arrowSize}px;
+      z-index: 100;
+      transition: transform 300ms;
+    }
+
+    .browser-extension-swipe-back-arrow-left {
+      left: -100px;
+    }
+
+    .browser-extension-swipe-back-arrow-right {
+      right: -100px;
+      transform: scaleX(-1);
+    }
+
+    .browser-extension-swipe-back-arrow.transition {
+      transition: opacity ${fadeDelay}ms;
+      opacity: 0;
+    }
+
+    .picker {
+      border-radius: 50px;
+    }
+  `;
+  document.head.appendChild(style);
+});
 
 function debounce(fn, duration) {
   let expiresAt = 0;
@@ -105,7 +138,7 @@ function handleWheel(event) {
     }
     position = 0;
   }
-  if (scrollTimeoutID) {  // bug-fix, the scroll position was never reset; better control now
+  if (scrollTimeoutID) {
     clearTimeout(scrollTimeoutID);
   }
   scrollTimeoutID = setTimeout(() => {
@@ -124,7 +157,7 @@ function handleScroll(event) {
   lastScrollX = scrollX;
 }
 
-function main() {
+function init() {
   // @ts-ignore
   if (/Mac/.test(window.navigator.platform)) {
     return;
@@ -138,4 +171,4 @@ chrome.storage.sync.get(["enableFeature"], function (data) {
   if (!data.enableFeature) {
     return;
   }
-main();});
+init();});

@@ -6,8 +6,9 @@ leftArrow.className = "browser-extension-swipe-back-arrow browser-extension-swip
 const rightArrow = document.createElement("img");
 rightArrow.className = "browser-extension-swipe-back-arrow browser-extension-swipe-back-arrow-right";
 
+let selectedIcon;
 chrome.storage.sync.get(["selectedIcon"], function (data) {
-  const selectedIcon = data.selectedIcon ?? "4.svg";
+  selectedIcon = data.selectedIcon ?? "4.svg";
   leftArrow.src = chrome.runtime.getURL(`assets/arrow_styles/${selectedIcon}`);
   rightArrow.src = leftArrow.src;
 });
@@ -49,7 +50,7 @@ chrome.storage.sync.get(["sensitivity", "travelDistance", "arrowSize", "fadeDela
 
     .browser-extension-swipe-back-arrow-right {
       right: -100px;
-      transform: scaleX(-1);
+      transform: ${selectedIcon.includes('_') ? 'none' : 'scaleX(-1)'};
     }
 
     .browser-extension-swipe-back-arrow.transition {

@@ -26,10 +26,10 @@ const imageInitialLeft = -110;
 let arrowSize, iconTravelDist, fadeDelay, sensitivity ; // user-settings
 
 chrome.storage.sync.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
-  fadeDelay = data.fadeDelay ?? 700;
+  fadeDelay = data.fadeDelay ?? 600;
   sensitivity = data.sensitivity ?? 16;
   iconTravelDist = data.travelDistance ?? 120;
-  arrowSize = data.arrowSize ?? 60;
+  arrowSize = data.arrowSize ?? 70;
   sensitivity = sensitivity / 200;
 
   // Inject CSS after settings are loaded

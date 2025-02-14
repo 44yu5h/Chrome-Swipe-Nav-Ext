@@ -1,11 +1,11 @@
 <div align="center">
   <img src="assets/logo.png"/>
 </div>
-<div id="toc" align="center"><ul style="list-style: none"><summary><h2>Swipe Navigation Gesture Extension</h2></summary></ul></div>
+<div id="toc" align="center"><ul style="list-style: none"><summary><h1>Swipe Navigation Gesture Extension</h1></summary></ul></div>
 
 <div align="center" style="margin-top: 22px; margin-bottom:22px;">
   <a href="https://chromewebstore.google.com/detail/cakieojfddljnniobmeiaejblbfgdjhf">  <img src="https://developer.chrome.com/static/docs/webstore/branding/image/YT2Grfi9vEBa2wAPzhWa.png" style="height: 54px; width: 190px;"></a>
-  <a href="https://www.buymeacoffee.com/44yu5h"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: 46px; width: 200px;"></a>
+  <a href="https://www.buymeacoffee.com/44yu5h"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: 46px; width: 210px;"></a>
   <a href="https://nowpayments.io/donation?api_key=5KJ4EM7-40CMAB3-K3Q3CRZ-H42TP6J"><img src="https://nowpayments.io/images/embeds/donation-button-black.svg" style="height: 48px; width: 180px;"></a>
 </div><br>
 
@@ -39,19 +39,19 @@ Spent a lot of time trying to build Gnome extension only to find Gnome only capt
 # Loving it? Let me know!
 <div align="center">
 <br>
-<h4>Leave a review on webstore!</h4>
-  <a href="https://chromewebstore.google.com/detail/cakieojfddljnniobmeiaejblbfgdjhf">
-    <img src="https://developer.chrome.com/static/docs/webstore/branding/image/YT2Grfi9vEBa2wAPzhWa.png" style="height: 45px; width: 144px;">
+<h3>A supporter is worth a 100 followers!</h3>
+  <a href="https://www.buymeacoffee.com/44yu5h">
+    <img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: 48px; width: 212px;">
   </a>
 <br><br>
-<h4>A supporter is worth a 100 followers!</h4>
-  <a href="https://www.buymeacoffee.com/44yu5h">
-    <img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: 32px; width: 148px;">
+<h3>Leave a review on webstore!</h3>
+  <a href="https://chromewebstore.google.com/detail/cakieojfddljnniobmeiaejblbfgdjhf">
+    <img src="https://developer.chrome.com/static/docs/webstore/branding/image/YT2Grfi9vEBa2wAPzhWa.png" style="height: 58px; width: 190px;">
   </a>
 <br>
 </div>
 
-# Not Loving it?
+## Not Loving it?
 
 Create an [issue](https://github.com/44yu5h/chrome-swipe-nav-ext/issues) and abuse in the dm\
 Same goes for feature requests except for the abuse part.
@@ -68,6 +68,7 @@ Be sure to **fork** the repository **rather than** downloading the ZIP file to m
 
 ![1](screenshots/option-page.png)<br><br>
 ![2](screenshots/popup.png) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![3](screenshots/nope-swipe.gif)
 ![3](screenshots/arrow-swipe.gif)
 ![4](screenshots/run-swipe.gif)
 

@@ -2,11 +2,11 @@
   "manifest_version": 3,
   "name": "Swipe Navigation Gesture (back & forth)",
   "version": "3.2.0",
-  "description": "Navigate back and forth with a 2-finger swipe gesture with interesting icons",
+  "description": "[FOSS] Navigate back and forth with 2-finger swipe gestures",
   "options_page": "src/user-settings.html",
   "web_accessible_resources": [
     {
-      "resources": ["assets/arrow_styles, assets/icons"],
+      "resources": ["assets/arrow_styles/*"],
       "matches": ["<all_urls>"]
     }
   ],

@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Load saved settings
     chrome.storage.sync.get(["enableFeature", "selectedIcon", "fadeDelay", "sensitivity", "arrowSize", "travelDistance"], function (data) {
         enableFeatureCheckbox.checked = data.enableFeature ?? true;
-        fadeDelaySlider.value = data.fadeDelay ?? 1000;
-        sensitivitySlider.value = data.sensitivity ?? 50;
-        arrowSizeInput.value = data.arrowSize ?? 60;
+        fadeDelaySlider.value = data.fadeDelay ?? 600;
+        sensitivitySlider.value = data.sensitivity ?? 16;
+        arrowSizeInput.value = data.arrowSize ?? 70;
         travelDistanceInput.value = data.travelDistance ?? 120;
 
         // Update pills

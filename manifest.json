@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "chrome-swipe-navigation",
-  "version": "2.0.0",
-  "description": "Navigate back and forward in Chrome with a 2-finger swipe gesture",
+  "name": "Swipe Navigation Gesture (back & forth)",
+  "version": "3.2.0",
+  "description": "Navigate back and forth with a 2-finger swipe gesture with interesting icons",
   "options_page": "src/user-settings.html",
   "web_accessible_resources": [
     {
-      "resources": ["assets/*"],
+      "resources": ["assets/arrow_styles, assets/icons"],
       "matches": ["<all_urls>"]
     }
   ],

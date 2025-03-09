@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let expanded = false;
 
     // Load saved settings
-    chrome.storage.sync.get(["enableFeature", "selectedIcon", "fadeDelay", "sensitivity", "arrowSize", "travelDistance"], function (data) {
+    chrome.storage.local.get(["enableFeature", "selectedIcon", "fadeDelay", "sensitivity", "arrowSize", "travelDistance"], function (data) {
         enableFeatureCheckbox.checked = data.enableFeature ?? true;
         fadeDelaySlider.value = data.fadeDelay ?? 1000;
         sensitivitySlider.value = data.sensitivity ?? 50;
@@ -34,15 +34,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Auto-save toggle setting
     enableFeatureCheckbox.addEventListener("change", function () {
-        chrome.storage.sync.set({ enableFeature: enableFeatureCheckbox.checked });
+        chrome.storage.local.set({ enableFeature: enableFeatureCheckbox.checked });
     });
 
     // Auto-save input setting
     arrowSizeInput.addEventListener("input", function () {
-        chrome.storage.sync.set({ arrowSize: arrowSizeInput.value });
+        chrome.storage.local.set({ arrowSize: arrowSizeInput.value });
     });
     travelDistanceInput.addEventListener("input", function () {
-        chrome.storage.sync.set({ travelDistance: travelDistanceInput.value });
+        chrome.storage.local.set({ travelDistance: travelDistanceInput.value });
     });
 
     // Handle slider changes
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         slider.addEventListener("input", function () {
             valueElement.textContent = slider.value;
             updateSliderBackground(slider);
-            chrome.storage.sync.set({ [key]: slider.value });
+            chrome.storage.local.set({ [key]: slider.value });
         });
     }
     handleSliderChange(fadeDelaySlider, fadeDelayValue, "fadeDelay");
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             img.addEventListener("click", function () {
                 document.querySelectorAll(".icon-item").forEach(el => el.classList.remove("selected"));
                 img.classList.add("selected");
-                chrome.storage.sync.set({ selectedIcon: icon });
+                chrome.storage.local.set({ selectedIcon: icon });
             });
             iconGrid.appendChild(img);
         });

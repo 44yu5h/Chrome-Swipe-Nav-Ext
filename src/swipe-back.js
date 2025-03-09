@@ -7,7 +7,7 @@ const rightArrow = document.createElement("img");
 rightArrow.className = "browser-extension-swipe-back-arrow browser-extension-swipe-back-arrow-right";
 
 let selectedIcon;
-chrome.storage.sync.get(["selectedIcon"], function (data) {
+chrome.storage.local.get(["selectedIcon"], function (data) {
   selectedIcon = data.selectedIcon ?? "4.svg";
   leftArrow.src = chrome.runtime.getURL(`assets/arrow_styles/${selectedIcon}`);
   rightArrow.src = leftArrow.src;
@@ -25,7 +25,7 @@ const imageInitialLeft = -110;
 
 let arrowSize, iconTravelDist, fadeDelay, sensitivity ; // user-settings
 
-chrome.storage.sync.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
+chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
   fadeDelay = data.fadeDelay ?? 600;
   sensitivity = data.sensitivity ?? 16;
   iconTravelDist = data.travelDistance ?? 120;
@@ -167,7 +167,7 @@ function init() {
   document.addEventListener("scroll", handleScroll, { capture: true });
 }
 
-chrome.storage.sync.get(["enableFeature"], function (data) {
+chrome.storage.local.get(["enableFeature"], function (data) {
   if (!data.enableFeature) {
     return;
   }

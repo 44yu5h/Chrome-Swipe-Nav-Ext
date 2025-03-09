@@ -40,7 +40,7 @@ chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDel
       top: calc(50vh - ${arrowSize}px / 2);
       width: ${arrowSize}px;
       height: ${arrowSize}px;
-      z-index: 100;
+      z-index: 99999;
       transition: transform 300ms;
     }
 

@@ -20,6 +20,7 @@ let position = 0;
 let freezeUntil = 0;
 let transitionTimeoutID = 0;
 let resetTimeoutID = 0;
+let hasTriggered = false;
 
 const imageInitialLeft = -110;
 
@@ -50,7 +51,7 @@ chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDel
 
     .browser-extension-swipe-back-arrow-right {
       right: -100px;
-      transform: ${selectedIcon.includes('_') ? 'none' : 'scaleX(-1)'};
+      transform: ${selectedIcon && selectedIcon.includes('_') ? 'none' : 'scaleX(-1)'};
     }
 
     .browser-extension-swipe-back-arrow.transition {
@@ -86,6 +87,7 @@ const historyForward = debounce(function historyForward() {
 
 function resetPosition() {
   position = 0;
+  hasTriggered = false;
   leftArrow.style.left = imageInitialLeft + "px";
   rightArrow.style.right = imageInitialLeft + "px";
 }
@@ -121,6 +123,18 @@ function handleWheel(event) {
   if (Date.now() < freezeUntil) {
     return;
   }
+
+  if (resetTimeoutID) {
+    clearTimeout(resetTimeoutID);
+  }
+  resetTimeoutID = setTimeout(() => {
+    resetPosition();
+  }, fadeDelay);
+
+  if (hasTriggered) {
+    return;
+  }
+
   position -= event.deltaX;
 
   if (position > 0) {
@@ -129,21 +143,15 @@ function handleWheel(event) {
     animateArrow(rightArrow);
   }
 
-  if (position * sensitivity  >= iconTravelDist|| position * sensitivity  <= -iconTravelDist) {
+  if (Math.abs(position * sensitivity) >= iconTravelDist) {
+    hasTriggered = true;
     freezeUntil = Date.now() + 500;
     if (position > 0) {
-    historyBack();
+      historyBack();
     } else {
-    historyForward();
+      historyForward();
     }
-    position = 0;
   }
-  if (resetTimeoutID) {
-    clearTimeout(resetTimeoutID);
-  }
-  resetTimeoutID = setTimeout(() => {
-    resetPosition();
-  }, fadeDelay);
 }
 
 let lastScrollX = 0;
@@ -171,4 +179,5 @@ chrome.storage.local.get(["enableFeature"], function (data) {
   if (!data.enableFeature) {
     return;
   }
-init();});
+  init();
+});

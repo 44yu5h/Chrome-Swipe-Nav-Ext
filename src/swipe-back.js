@@ -24,23 +24,29 @@ let hasTriggered = false;
 
 const imageInitialLeft = -110;
 
-let arrowSize, iconTravelDist, fadeDelay, sensitivity ; // user-settings
+let arrowSize, iconTravelDist, fadeDelay, sensitivity; // user-settings
 
-chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay"], function (data) {
+chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDelay", "selectedIcon"], function (data) {
   fadeDelay = data.fadeDelay ?? 600;
-  sensitivity = data.sensitivity ?? 16;
+  sensitivity = (data.sensitivity ?? 16) / 200;
   iconTravelDist = data.travelDistance ?? 120;
   arrowSize = data.arrowSize ?? 70;
-  sensitivity = sensitivity / 200;
+  selectedIcon = data.selectedIcon ?? "4.svg";
+  
+  // Set initial arrow properties
+  leftArrow.src = chrome.runtime.getURL(`assets/arrow_styles/${selectedIcon}`);
+  rightArrow.src = leftArrow.src;
+  leftArrow.style.width = leftArrow.style.height = rightArrow.style.width = rightArrow.style.height = `${arrowSize}px`;
+  leftArrow.style.top = rightArrow.style.top = `calc(50vh - ${arrowSize}px / 2)`;
+  rightArrow.style.transform = selectedIcon.includes('_') ? 'none' : 'scaleX(-1)';
+  leftArrow.style.setProperty('--fade-delay', `${fadeDelay}ms`);
+  rightArrow.style.setProperty('--fade-delay', `${fadeDelay}ms`);
 
   // Inject CSS after settings are loaded
   const style = document.createElement('style');
   style.textContent = `
     .browser-extension-swipe-back-arrow {
       position: fixed;
-      top: calc(50vh - ${arrowSize}px / 2);
-      width: ${arrowSize}px;
-      height: ${arrowSize}px;
       z-index: 99999;
       transition: transform 300ms;
     }
@@ -51,11 +57,10 @@ chrome.storage.local.get(["sensitivity", "travelDistance", "arrowSize", "fadeDel
 
     .browser-extension-swipe-back-arrow-right {
       right: -100px;
-      transform: ${selectedIcon && selectedIcon.includes('_') ? 'none' : 'scaleX(-1)'};
     }
 
     .browser-extension-swipe-back-arrow.transition {
-      transition: opacity ${fadeDelay}ms;
+      transition: opacity var(--fade-delay, 600ms);
       opacity: 0;
     }
 
@@ -176,8 +181,48 @@ function init() {
 }
 
 chrome.storage.local.get(["enableFeature"], function (data) {
-  if (!data.enableFeature) {
-    return;
+  if (data.enableFeature !== false) {
+    init();
   }
-  init();
+});
+
+// Listen for storage changes to update settings in real-time
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  if (namespace !== 'local') return;
+
+  // Handle enable/disable toggle
+  if (changes.enableFeature) {
+    if (changes.enableFeature.newValue === false) {
+      // Disable: remove event listeners and hide arrows
+      document.removeEventListener("wheel", handleWheel);
+      document.removeEventListener("scroll", handleScroll);
+      leftArrow.style.display = 'none';
+      rightArrow.style.display = 'none';
+    } else if (changes.enableFeature.newValue === true) {
+      // Enable: add event listeners and show arrows
+      document.addEventListener("wheel", handleWheel);
+      document.addEventListener("scroll", handleScroll, { capture: true });
+      leftArrow.style.display = 'block';
+      rightArrow.style.display = 'block';
+    }
+  }
+
+  // Update settings directly
+  if (changes.selectedIcon) {
+    selectedIcon = changes.selectedIcon.newValue;
+    leftArrow.src = rightArrow.src = chrome.runtime.getURL(`assets/arrow_styles/${selectedIcon}`);
+    rightArrow.style.transform = selectedIcon.includes('_') ? 'none' : 'scaleX(-1)';
+  }
+  if (changes.arrowSize) {
+    arrowSize = changes.arrowSize.newValue;
+    leftArrow.style.width = leftArrow.style.height = rightArrow.style.width = rightArrow.style.height = `${arrowSize}px`;
+    leftArrow.style.top = rightArrow.style.top = `calc(50vh - ${arrowSize}px / 2)`;
+  }
+  if (changes.travelDistance) iconTravelDist = changes.travelDistance.newValue;
+  if (changes.fadeDelay) {
+    fadeDelay = changes.fadeDelay.newValue;
+    leftArrow.style.setProperty('--fade-delay', `${fadeDelay}ms`);
+    rightArrow.style.setProperty('--fade-delay', `${fadeDelay}ms`);
+  }
+  if (changes.sensitivity) sensitivity = changes.sensitivity.newValue / 200;
 });
